@@ -26,5 +26,6 @@ Route::namespace('Api\V1')->group(function () {
     Route::put('products/{id}',[ProductController::class, 'update']);
     Route::delete('products/{id}',[ProductController::class, 'destroy']);
 
-    Route::post('category',[CategoryController::class, 'store']);
+    Route::post('categories',[CategoryController::class, 'store']);
+    Route::delete('categories/{id}',[CategoryController::class, 'destroy']);
 });

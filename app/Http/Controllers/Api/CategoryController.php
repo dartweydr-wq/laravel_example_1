@@ -29,4 +29,17 @@ class CategoryController extends BaseController
 
         return $this->sendResponse($product->toArray(), 'created successfully.');
     }
+
+    public function destroy($id)
+    {
+        $category = Category::find($id);
+
+        if ($category->products()->first()) {
+            return $this->sendError(false, 'Deleted error. Product has been find.');
+        }
+
+        $deleteCategory = $category->delete();
+
+        return $this->sendResponse($deleteCategory, 'Deleted successfully.');
+    }
 }
