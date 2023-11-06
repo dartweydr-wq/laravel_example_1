@@ -3,16 +3,44 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BaseController;
+use App\Http\Resources\ResourceCollections\ProductResourceCollection;
 use App\Models\Product;
+use App\Repositories\CRUD\ProductRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Validator;
 
 class ProductController extends BaseController
 {
-    public function __construct()
-    {
+    private ProductRepository $repository;
 
+    public function __construct(ProductRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function getProductByName(Request $request) : ProductResourceCollection
+    {
+        $result = $this->repository->getProductsByName($request->name)->get();
+        return new ProductResourceCollection($result);
+    }
+
+    public function getProductByCategories(Request $request) : ProductResourceCollection
+    {
+        $result = $this->repository->getProductByCategories($request->categories_id)->get();
+        return new ProductResourceCollection($result);
+    }
+
+    public function getProductCategoryByNames(Request $request) : ProductResourceCollection
+    {
+        $result = $this->repository->getProductCategoryByNames($request->category_name)->get();
+        return new ProductResourceCollection($result);
+    }
+
+    public function getProductByPrice(Request $request) : ProductResourceCollection
+    {
+        $result = $this->repository->getProductByPrice($request->price)->get();
+        return new ProductResourceCollection($result);
     }
 
     public function store(Request $request) : JsonResponse
