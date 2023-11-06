@@ -20,7 +20,7 @@ class ProductRepository implements CRUDRepositoryInterface
         return Product::query()->orderBy('id', 'asc');
     }
 
-    public function getProductsByName(string $productName = ''): Builder
+    /*public function getProductsByName(string $productName = ''): Builder
     {
         $builder = Product::where('name', 'like', "%{$productName}%");
 
@@ -50,6 +50,23 @@ class ProductRepository implements CRUDRepositoryInterface
     public function getProductByPrice(array $productPrice = []): Builder
     {
         $builder = Product::whereBetween('price',$productPrice);
+
+        return $builder;
+    }*/
+
+    public function getProduct(array $data) : Builder
+    {
+        $productName = (array_key_exists('name', $data)) ?  $data['name'] : '';
+        $categories = (array_key_exists('categories_id', $data)) ? $data['categories_id'] : [];
+        $categoryName = (array_key_exists('categoryName', $data)) ? $data['categoryName'] : '';
+        $productPrice = (array_key_exists('productPrice', $data)) ? $data['productPrice'] : [];
+
+        $builder = Product::query()
+            ->where('name', 'like', "%{$productName}%")
+            ->orWhereBetween('price', $productPrice)
+            ->orWhereHas('categories', function (Builder $q) use ($categories, $categoryName) {
+                return $q->whereIn('categories_id', $categories)->orWhere('name', 'like', "%{$categoryName}%");
+            });
 
         return $builder;
     }

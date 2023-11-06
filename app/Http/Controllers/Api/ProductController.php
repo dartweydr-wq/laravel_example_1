@@ -19,7 +19,7 @@ class ProductController extends BaseController
         $this->repository = $repository;
     }
 
-    public function getProductByName(Request $request) : ProductResourceCollection
+    /*public function getProductByName(Request $request) : ProductResourceCollection
     {
         $result = $this->repository->getProductsByName($request->name)->get();
         return new ProductResourceCollection($result);
@@ -40,6 +40,13 @@ class ProductController extends BaseController
     public function getProductByPrice(Request $request) : ProductResourceCollection
     {
         $result = $this->repository->getProductByPrice($request->price)->get();
+        return new ProductResourceCollection($result);
+    }*/
+
+    public function getProduct(Request $request) : ProductResourceCollection
+    {
+        $data = $request->all();
+        $result = $this->repository->getProduct($data)->get();
         return new ProductResourceCollection($result);
     }
 
