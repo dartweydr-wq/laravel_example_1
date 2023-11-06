@@ -21,14 +21,14 @@ class ProductController extends BaseController
             'name' => 'required',
             'vendor_code' => 'required',
             'price' => 'required',
-            //'categories_id' => 'required',
+            'categories_id' => 'required',
         ],[
             'required' => ':attribute - Обязательное поле',
         ],[
             'name' => 'Название продукта',
             'vendor_code' => 'Артикул продукта',
             'price' => 'Цена продукта',
-            //'categories_id' => 'Категория продукта',
+            'categories_id' => 'Категория продукта',
         ]);
 
         if($validator->fails()){
@@ -67,5 +67,14 @@ class ProductController extends BaseController
         $product = Product::find($id)->update($data);
 
         return $this->sendResponse($product, 'updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        if ($product = Product::find($id)->delete()) {
+            return $this->sendResponse($product, 'deleted successfully.');
+        }
+
+        return $this->sendError($product, 'deleted error.');
     }
 }
