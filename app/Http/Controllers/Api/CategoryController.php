@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Category;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Validator;
 
 class CategoryController extends BaseController
 {
-    public function store(Request $request)
+    public function store(Request $request) : JsonResponse
     {
         $data = $request->all();
 
@@ -30,7 +31,7 @@ class CategoryController extends BaseController
         return $this->sendResponse($product->toArray(), 'created successfully.');
     }
 
-    public function destroy($id)
+    public function destroy($id) : JsonResponse
     {
         $category = Category::find($id);
 

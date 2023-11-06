@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BaseController;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -13,7 +14,8 @@ class ProductController extends BaseController
     {
 
     }
-    public function store(Request $request)
+
+    public function store(Request $request) : JsonResponse
     {
         $data = $request->all();
 
@@ -44,7 +46,7 @@ class ProductController extends BaseController
         return $this->sendResponse($product->toArray(), 'created successfully.');
     }
 
-    public function update($id, Request $request)
+    public function update($id, Request $request) : JsonResponse
     {
         $data = $request->all();
 
@@ -69,7 +71,7 @@ class ProductController extends BaseController
         return $this->sendResponse($product, 'updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy($id) : JsonResponse
     {
         if ($product = Product::find($id)->delete()) {
             return $this->sendResponse($product, 'deleted successfully.');
