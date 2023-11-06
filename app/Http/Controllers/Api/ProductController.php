@@ -31,9 +31,9 @@ class ProductController extends BaseController
         return new ProductResourceCollection($result);
     }
 
-    public function getProductCategoryByNames(Request $request) : ProductResourceCollection
+    public function getProductByCategoryName(Request $request) : ProductResourceCollection
     {
-        $result = $this->repository->getProductCategoryByNames($request->category_name)->get();
+        $result = $this->repository->getProductByCategoryName($request->category_name)->get();
         return new ProductResourceCollection($result);
     }
 

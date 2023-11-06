@@ -37,7 +37,7 @@ class ProductRepository implements CRUDRepositoryInterface
         return $builder;
     }
 
-    public function getProductCategoryByNames(string $categoryName = ''): Builder
+    public function getProductByCategoryName(string $categoryName = ''): Builder
     {
         $builder = Product::with('categories')
             ->whereHas('categories', function ($q) use ($categoryName) {
