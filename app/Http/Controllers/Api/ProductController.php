@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\BaseController;
-use App\Http\Resources\ResourceCollections\ProductResourceCollection;
+use App\Http\Filters\ProductFilters;
+use App\Http\Resources\Resource\ProductResource;
 use App\Models\Product;
 use App\Repositories\CRUD\ProductRepository;
 use Illuminate\Http\JsonResponse;
@@ -19,35 +20,15 @@ class ProductController extends BaseController
         $this->repository = $repository;
     }
 
-    /*public function getProductByName(Request $request) : ProductResourceCollection
+    public function getProducts(Request $request) : ProductResource
     {
-        $result = $this->repository->getProductsByName($request->name)->get();
-        return new ProductResourceCollection($result);
-    }
+        $products = (new ProductFilters($request, $this->repository->getProduct()))->apply()->get();
 
-    public function getProductByCategories(Request $request) : ProductResourceCollection
-    {
-        $result = $this->repository->getProductByCategories($request->categories_id)->get();
-        return new ProductResourceCollection($result);
-    }
+        $result = [
+            'products' => $products,
+        ];
 
-    public function getProductByCategoryName(Request $request) : ProductResourceCollection
-    {
-        $result = $this->repository->getProductByCategoryName($request->category_name)->get();
-        return new ProductResourceCollection($result);
-    }
-
-    public function getProductByPrice(Request $request) : ProductResourceCollection
-    {
-        $result = $this->repository->getProductByPrice($request->price)->get();
-        return new ProductResourceCollection($result);
-    }*/
-
-    public function getProduct(Request $request) : ProductResourceCollection
-    {
-        $data = $request->all();
-        $result = $this->repository->getProduct($data)->get();
-        return new ProductResourceCollection($result);
+        return new ProductResource($result);
     }
 
     public function store(Request $request) : JsonResponse
@@ -55,17 +36,19 @@ class ProductController extends BaseController
         $data = $request->all();
 
         $validator = Validator::make($data, [
-            'name' => 'required',
-            'vendor_code' => 'required',
-            'price' => 'required',
-            'categories_id' => 'required',
+            'name' => ['required'],
+            'vendor_code' => ['required'],
+            'price' => ['required'],
+            'categories_id' => ['required'],
+            'published' => ['required','boolean'],
         ],[
             'required' => ':attribute - Обязательное поле',
         ],[
-            'name' => 'Название продукта',
-            'vendor_code' => 'Артикул продукта',
-            'price' => 'Цена продукта',
-            'categories_id' => 'Категория продукта',
+            'name' => 'Название товара',
+            'vendor_code' => 'Артикул товара',
+            'price' => 'Цена товара',
+            'categories_id' => 'Категория товара',
+            'published' => 'Опубликовать товар',
         ]);
 
         if($validator->fails()){

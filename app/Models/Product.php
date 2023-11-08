@@ -14,12 +14,14 @@ class Product extends Model
         'name',
         'vendor_code',
         'price',
+        'published',
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at',
         'deleted_at',
+        'pivot',
     ];
 
     protected $dates = ['deleted_at'];

@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Resource;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Arr;
 
 
 class ProductResource extends JsonResource
@@ -16,10 +17,8 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'price' => $this->price,
-            'categoryName' => $this->categories->pluck('name'),
+            'name' => 'Получение списка товаров',
+            'products' => Arr::get($this->resource,'products'),
         ];
     }
 }
